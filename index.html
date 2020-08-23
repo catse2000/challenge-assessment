@@ -3,11 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="assets/css/style.css"/>
-    <title>Document</title>
+    <title>Coding Quiz</title>
 </head>
 <body>
-    
+    <header>
+        <div>
+            <a href="#" id="high-scores">View high scores</a>
+            <p>Time: <span id="timer">75</span></p>
+        </div>
+    </header>
+
+    <main>
+        <section class="challenge-section" id="challenge-start">
+            <div class="challenge-wrapper">
+                <h1>Coding Quiz Challenge</h1>
+                <p>Try to answer the following code-related questions within the time limit.
+                    Keep in mind that incorrect answers will penalize your score/time by ten seconds!
+                </p>
+                <button id="btnStartQuiz">Start Quiz</button>
+            </div>
+        </section>
+        <section id="challenge-quiz">
+
+        </section>
+        <section id="challenge-end">
+
+        </section>
+    </main>
     <script src="assets/js/script.js"></script>
 </body>
 </html>

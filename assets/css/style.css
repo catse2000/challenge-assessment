@@ -1,0 +1,54 @@
+* {
+    box-sizing: border-box;
+}
+
+:root{
+    --primary: purple;
+    --secondary: fuchsia;
+
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+header p{
+    margin: 0px;
+}
+header div{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+}
+header a{
+    color: var(--secondary);
+    text-decoration: none;
+}
+
+
+.challenge-section {
+    display: flex;
+    justify-content: center; 
+    min-height: 80vh;
+    align-items: center;
+
+}
+.challenge-wrapper{
+    width: 70vh;
+    text-align: center;
+
+}
+
+button {
+    padding: 10px 25px; 
+    background-color: var(--primary);
+    border: none;
+    border-radius: 5px;
+    color: white;
+}
+
+button:hover {
+    background-color: var(--secondary);
+    color: white;
+}
