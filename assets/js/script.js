@@ -145,6 +145,23 @@ var startMenu = function(){
     answersContainer.appendChild(startButton);
 }
 
+var setQuestions = function(){
+    challengeTitle.textContent = questions[num].question;
+    if (challengeDesc || startButton){
+        challengeDesc.remove();
+        startButton.remove();
+    }
+    
+    for (var i = 0; questions[num].choices.length; i++){
+        var answerChoices = questions[num].choices[i];
+        
+        questionButtonEl.textContent = answer;
+        questionButtonEl.setAttribute("answer-num", i);
+        challengeQuestions.appendChild(questionButtonEl.cloneNode(true));
+        
+    }
 
+}
 
 window.addEventListener('load', startMenu);
+startButton.addEventListener('click', setQuestions);
