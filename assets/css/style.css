@@ -3,8 +3,8 @@
 }
 
 :root{
-    --primary: purple;
-    --secondary: fuchsia;
+    --primary: #470080;
+    --secondary: #b07cff;
 
 }
 
@@ -40,15 +40,32 @@ header a{
 
 }
 
-button {
+
+.challenge-interactions button {
     padding: 10px 25px; 
     background-color: var(--primary);
     border: none;
     border-radius: 5px;
     color: white;
+    text-align: center;
 }
 
-button:hover {
+.challenge-interactions button:hover {
     background-color: var(--secondary);
     color: white;
+}
+
+#question-choices{
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.choice {
+    margin: 5px;
+    text-align: left;
+}
+
+#result {
+    color: grey;
 }
