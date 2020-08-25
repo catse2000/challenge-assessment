@@ -40,30 +40,43 @@ header a{
 
 }
 
+.challenge-interactions{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
-.challenge-interactions button {
+
+
+.buttons{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.choiceBtn {
     padding: 10px 25px; 
+    margin: 5px 5px;
     background-color: var(--primary);
     border: none;
     border-radius: 5px;
     color: white;
-    text-align: center;
+
 }
 
-.challenge-interactions button:hover {
+.choiceBtn:hover {
     background-color: var(--secondary);
     color: white;
 }
 
-#question-choices{
-    text-align: left;
-    display: flex;
-    flex-direction: column;
+.submit{
+    
 }
 
 .choice {
     margin: 5px;
-    text-align: left;
+    
 }
 
 #result {

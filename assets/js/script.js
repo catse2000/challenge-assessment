@@ -1,13 +1,12 @@
-var challengeContainer = document.querySelector(".challenge-wrapper");
-var answersContainer = document.querySelector(".challenge-interactions")
-var challengeTitle = document.createElement("h1");
-challengeTitle.textContent = "Coding Quiz Challenge";
-var challengeDesc = document.createElement("p");
-challengeDesc.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!"
+var main = document.querySelector("#page-content");
+var contentContainer = document.querySelector(".challenge-wrapper"); //div.challenge-wrapper
+var content = document.querySelector(".challenge-interactions"); //div.challenge-interactions
+var buttonContainer = document.querySelector(".buttons");//div.buttons
+var challengeTitle = document.querySelector("#title");//h1#title 
+var challengeDesc = document.querySelector("#desc");//p#desc
 var startButton = document.createElement("button");
-startButton.className = "startBtn";
-startButton.textContent = "Start Quiz";
-var answers = createElement("ol");
+var questionButton = document.createElement("button");
+var correctAnswer = 0;
 var timer = 75;
 var score = 0;
 var num = 0; //used to store which question is currently being displayed
@@ -139,29 +138,57 @@ var questions = [
     }
 ];
 
-var startMenu = function(){
-    challengeContainer.insertBefore(challengeTitle, answersContainer);
-    challengeContainer.insertBefore(challengeDesc, answersContainer);
-    answersContainer.appendChild(startButton);
+var loadMenu = function(){ //used to load Menu at start, and also when user selects "tryAgain"
+    challengeTitle.textContent = "Coding Quiz Challenge";
+    challengeDesc.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!"
+    startButton.className = "choiceBtn";
+    startButton.id = "startBtn";
+    buttonContainer.appendChild(startButton);
+    startButton.textContent = "Start Quiz";
+    num = 0;
+    score = 0;
 }
 
 var setQuestions = function(){
     challengeTitle.textContent = questions[num].question;
-    if (challengeDesc || startButton){
+     if (challengeDesc || startButton){
         challengeDesc.remove();
         startButton.remove();
     }
     
-    for (var i = 0; questions[num].choices.length; i++){
-        var answerChoices = questions[num].choices[i];
-        
-        questionButtonEl.textContent = answer;
-        questionButtonEl.setAttribute("answer-num", i);
-        challengeQuestions.appendChild(questionButtonEl.cloneNode(true));
-        
+    for (var i = 0; i < questions[num].choices.length; i++){
+        var answerChoice = questions[num].choices[i];
+        var questionButton = document.createElement("button");
+        questionButton.className = "choiceBtn";
+        questionButton.type = "submit";
+        questionButton.textContent = answerChoice.toString();
+        questionButton.setAttribute("question-num", i);
+        buttonContainer.appendChild(questionButton);
     }
+    correctAnswer = questions[num].answer;
+    //questionButton.addEventListener('click', checkAnswer);
 
+};
+questionButton.addEventListener('click', checkAnswer);
+
+var checkAnswer = function(){
+    var selectedAnswer = event.target.getAttribute("question-num");
+    console.log(selectedAnswer);
+    console.log(correctAnswer);
+    if (selectedAnswer == correctAnswer){
+        console.log("Correct!");
+    }
+    else{
+        console.log("Wrong!");
+    }
 }
+var clearQuestions = function(){
+    for (var i = 0; i < questions[num].choices.length; i++){
+        questionButton
+    }
+}
+var startTimer = function(){
 
-window.addEventListener('load', startMenu);
+};
+window.addEventListener('load', loadMenu);
 startButton.addEventListener('click', setQuestions);
