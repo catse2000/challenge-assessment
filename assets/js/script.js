@@ -150,6 +150,7 @@ var loadMenu = function(){ //used to load Menu at start, and also when user sele
 }
 
 var setQuestions = function(){
+    
     challengeTitle.textContent = questions[num].question;
      if (challengeDesc || startButton){
         challengeDesc.remove();
@@ -157,17 +158,20 @@ var setQuestions = function(){
     }
     
     for (var i = 0; i < questions[num].choices.length; i++){
+        
         var answerChoice = questions[num].choices[i];
-        var questionButton = document.createElement("button");
-        questionButton.className = "choiceBtn";
-        questionButton.type = "submit";
-        questionButton.textContent = answerChoice.toString();
-        questionButton.setAttribute("question-num", i);
+        var answerBtn = $("<button>");
+        answerBtn.className = "choiceBtn";
+        
+        answerBtn.textContent = answerChoice.toString();
+        answerBtn.setAttribute("question-num", i);
         buttonContainer.appendChild(questionButton);
     }
+    
     correctAnswer = questions[num].answer;
+    questionButton.onclick = checkAnswer(correctAnswer);
     //questionButton.addEventListener('click', checkAnswer);
-
+    event.preventDefault();
 };
 questionButton.addEventListener('click', checkAnswer);
 
