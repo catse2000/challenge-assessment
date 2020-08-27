@@ -6,8 +6,8 @@ var challengeTitle = document.querySelector("#title");//h1#title
 var challengeDesc = document.querySelector("#desc");//p#desc
 var startButton = document.createElement("button");
 var questionButton = document.createElement("button");
-var correctAnswer = 0;
-var timer = 75;
+var result = document.querySelector("#result");
+var timerEl = document.querySelector("#timer"); //span that holds timer
 var score = 0;
 var num = 0; //used to store which question is currently being displayed
 var questions = [
@@ -149,50 +149,109 @@ var loadMenu = function(){ //used to load Menu at start, and also when user sele
     score = 0;
 }
 
-var setQuestions = function(){
-    
-    challengeTitle.textContent = questions[num].question;
+var clearMenu = function(){
      if (challengeDesc || startButton){
         challengeDesc.remove();
         startButton.remove();
     }
+    setQuestions();
+    countDown();
+}
+
+var countDown = function(){
+    timer = 5;
+    var countInterval = setInterval(function(){
+        if (timer > 0){
+            timer--;
+            console.log(timerEl);
+            timerEl.textContent = timer;
+        }
+        else{
+            alert("You ran out of time! Let's see how you did:");
+            clearQuestions();
+            endGame();
+            clearInterval(countInterval);
+        }
+    }, 1000)
     
-    for (var i = 0; i < questions[num].choices.length; i++){
-        
-        var answerChoice = questions[num].choices[i];
-        var answerBtn = $("<button>");
-        answerBtn.className = "choiceBtn";
-        
-        answerBtn.textContent = answerChoice.toString();
-        answerBtn.setAttribute("question-num", i);
-        buttonContainer.appendChild(questionButton);
+};
+
+var setQuestions = function(){
+    if(num < questions.length){
+        for (var i = 0; i < questions[num].choices.length; i++){
+            challengeTitle.textContent = questions[num].question;
+            var answerChoice = questions[num].choices[i];
+            var answerBtn = document.createElement("button");
+            answerBtn.className = "choiceBtn";
+            answerBtn.textContent = answerChoice.toString();
+            answerBtn.setAttribute("question-num", i);
+            buttonContainer.appendChild(answerBtn);
+            answerBtn.addEventListener('click', checkAnswer);
+        }
+    }
+    else{
+        alert("You completed all of the questions! Let's see how you did:");
     }
     
-    correctAnswer = questions[num].answer;
-    questionButton.onclick = checkAnswer(correctAnswer);
-    //questionButton.addEventListener('click', checkAnswer);
-    event.preventDefault();
 };
-questionButton.addEventListener('click', checkAnswer);
 
 var checkAnswer = function(){
     var selectedAnswer = event.target.getAttribute("question-num");
-    console.log(selectedAnswer);
-    console.log(correctAnswer);
-    if (selectedAnswer == correctAnswer){
-        console.log("Correct!");
-    }
-    else{
-        console.log("Wrong!");
-    }
-}
+    var correctAnswer = questions[num].answer;
+
+        if (selectedAnswer == correctAnswer){
+            result.textContent = "Correct!"; 
+            score++;
+            var resultTimer = setInterval(function(){
+                result.textContent = '';
+                clearInterval(resultTimer);
+            }, 1500);
+        }
+        else{
+            result.textContent = "Wrong!";
+            var resultTimer = setInterval(function(){
+                result.textContent = '';
+                clearInterval(resultTimer);
+            }, 1500);
+        };
+    
+    clearQuestions();
+    num++;
+    setQuestions();
+}; 
+
+
+
 var clearQuestions = function(){
     for (var i = 0; i < questions[num].choices.length; i++){
-        questionButton
+        var answers = document.querySelector(".choiceBtn");
+        answers.remove();
     }
-}
-var startTimer = function(){
 
+}
+
+var endGame = function(){
+    result.remove();
+    challengeTitle.textContent = "All done!";
+    challengeDesc.textContent = "Your final score is " + score + "!";
+    content.appendChild(challengeDesc);
+    var initialsWrapper = document.createElement("div");
+    var initialsInput = document.createElement("input");
+    var submitBtn = document.createElement("button");
+    submitBtn.id = "submit";
+    submitBtn.className = "choiceBtn";
+    submitBtn.textContent = "Submit";
+    content.appendChild(initialsWrapper);
+    initialsWrapper.textContent = "Enter Initials: ";
+    initialsWrapper.appendChild(initialsInput);
+    initialsWrapper.appendChild(submitBtn);
 };
+
+var storeHighScore = function(){
+    event.preventDefault();
+    
+};
+
 window.addEventListener('load', loadMenu);
-startButton.addEventListener('click', setQuestions);
+startButton.addEventListener('click', clearMenu);
+submitBtn.addEventListener('click', storeHighScore);
