@@ -16,31 +16,30 @@ body {
 header p{
     margin: 0px;
 }
-header div{
+.nav{
     display: flex;
     justify-content: space-between;
     padding: 10px 15px;
 }
-header a{
+.nav a{
     color: var(--secondary);
     text-decoration: none;
 }
 
-
-.challenge-section {
+.main-section {
     display: flex;
     justify-content: center; 
     min-height: 80vh;
     align-items: center;
 
 }
-.challenge-wrapper{
+.main-wrapper{
     width: 70vh;
     text-align: center;
 
 }
 
-.challenge-interactions{
+.main-interactions{
     display: flex;
     flex-direction: column;
     justify-content: center;

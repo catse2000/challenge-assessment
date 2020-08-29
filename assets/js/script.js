@@ -1,11 +1,12 @@
 var main = document.querySelector("#page-content");
-var contentContainer = document.querySelector(".challenge-wrapper"); //div.challenge-wrapper
-var content = document.querySelector(".challenge-interactions"); //div.challenge-interactions
+var contentContainer = document.querySelector(".main-wrapper"); //div.challenge-wrapper
+var content = document.querySelector(".main-interactions"); //div.challenge-interactions
 var buttonContainer = document.querySelector(".buttons");//div.buttons
 var challengeTitle = document.querySelector("#title");//h1#title 
 var challengeDesc = document.querySelector("#desc");//p#desc
 var startButton = document.createElement("button");
 var questionButton = document.createElement("button");
+var initialsInput = document.createElement("input");
 var result = document.querySelector("#result");
 var timerEl = document.querySelector("#timer"); //span that holds timer
 var score = 0;
@@ -163,7 +164,6 @@ var countDown = function(){
     var countInterval = setInterval(function(){
         if (timer > 0){
             timer--;
-            console.log(timerEl);
             timerEl.textContent = timer;
         }
         else{
@@ -236,7 +236,9 @@ var endGame = function(){
     challengeDesc.textContent = "Your final score is " + score + "!";
     content.appendChild(challengeDesc);
     var initialsWrapper = document.createElement("div");
-    var initialsInput = document.createElement("input");
+    //var initialsInput = document.createElement("input");
+    initialsInput.id = "scoreInitials";
+    initialsInput.type = "text";
     var submitBtn = document.createElement("button");
     submitBtn.id = "submit";
     submitBtn.className = "choiceBtn";
@@ -245,13 +247,30 @@ var endGame = function(){
     initialsWrapper.textContent = "Enter Initials: ";
     initialsWrapper.appendChild(initialsInput);
     initialsWrapper.appendChild(submitBtn);
+    console.log(submitBtn);
+    submitBtn.addEventListener("click", storeHighScore);
+
 };
 
 var storeHighScore = function(){
-    event.preventDefault();
-    
+    var initials = initialsInput.value;
+    console.log(initials);
+    if (initials === ''){
+        alert("Please add your initials. We can't log your high score without them!");
+    }
+    else{
+        alert("You're High Score was successfully added!");
+        localStorage.setItem('Initials', initials);
+        localStorage.setItem('Score', score);
+    }
+
+    showHighScore();
 };
+
+var showHighScore = function(){
+    console.log("test");
+}
 
 window.addEventListener('load', loadMenu);
 startButton.addEventListener('click', clearMenu);
-submitBtn.addEventListener('click', storeHighScore);
+
