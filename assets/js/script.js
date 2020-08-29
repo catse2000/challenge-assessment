@@ -1,26 +1,19 @@
 var content = document.querySelector(".main-interactions"); //div.challenge-interactions
-//var buttonContainer = document.querySelector(".buttons");//div.buttons
+
 var headerTitleEl = document.createElement("h1"); //create "h1" element for menu title, question #, highScore titles
 headerTitleEl.id = "title"; //assign h1 classname "title" for styling
-//var headerTitle = document.querySelector("#title");//h1#title
 var descEl = document.createElement("p"); //create "p" element for menu description, questions, high score results, and scores
 descEl.id = "desc"; //assign id of "desc" to "p" element for styling
-//var Desc = document.querySelector("#desc");//p#desc
+var changeContainer = document.createElement("div");
+changeContainer.className = "change-container";
+var startDiv = document.createElement("div");
 var startBtn = document.createElement("button"); //create "button" element to be used as startBtn, question buttons, submit button, and clear and try buttons
-startBtn.className = "choiceBtn";
+startBtn.className = "choiceBtn startBtn";
 startBtn.id = "startBtn";
 startBtn.textContent = "Start Quiz"; //assign text to button
-var buttonContainer = document.createElement("div"); //create "div" to house and style all buttons
-buttonContainer.className = "buttons"; //assign className "buttons" to "div" for styling
 var result = document.createElement("p");
 result.id = "result";
-// var startButton = document.createElement("button");
-// var questionButton = document.createElement("button");
-
-
-
 var scoreInput = document.createElement("input");
-//var result = document.querySelector("#result");
 var timerEl = document.querySelector("#timer"); //span that holds timer
 var score = 0;
 var questionNum = 0; //used to store which question is currently being displayed
@@ -151,26 +144,20 @@ var questions = [
         answer: 0
     }
 ];
+var initialName = [];
+var initialScore = [];
+var tryNum = 0;
 
  var loadMenu = function(){ //used to load Menu at start, and also when user selects "tryAgain"
     headerTitleEl.textContent = "Coding Quiz Challenge"; //assign text to "h1"
     content.appendChild(headerTitleEl); //add "h1" mainInteractions "div"
     descEl.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!";
     content.appendChild(descEl); //add "p" to mainInteractions "div"
-    content.appendChild(buttonContainer); //add "div" for buttons to mainInteractions "div"
-    buttonContainer.appendChild(startBtn); //add "button" to "buttons" div
+    content.appendChild(changeContainer); //add "div" for buttons to mainInteractions "div"
+    changeContainer.appendChild(startBtn); //add "button" to "buttons" div
     content.appendChild(result);
     questionNum = 0; //clear questionNum to restart quiz
     score = 0; //clear previous score to restart quiz
-
-//     headerTitle.textContent = "Coding Quiz Challenge";
-//     Desc.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!"
-//     startButton.className = "choiceBtn";
-//     startButton.id = "startBtn";
-//     buttonContainer.appendChild(startButton);
-//     startButton.textContent = "Start Quiz";
-//     num = 0;
-//     score = 0;
 }
 
 var clearMenu = function(){ //used to clear the startMenu and start questions
@@ -180,12 +167,6 @@ var clearMenu = function(){ //used to clear the startMenu and start questions
     }
     setQuestions(); //start function that will compile questions
     countDown(); //starts timer
-    //      if (Desc || startButton){
-//         Desc.remove();
-//         startButton.remove();
-//     }
-//     setQuestions();
-//     countDown();
 }
 
 var setQuestions = function(){ //set up questions
@@ -195,30 +176,18 @@ var setQuestions = function(){ //set up questions
             descEl.textContent = questions[questionNum].question;
             var answerChoice = questions[questionNum].options[i];
             var answerOptionBtn = document.createElement("button");
-            answerOptionBtn.className = "choiceBtn";
-            answerOptionBtn.textContent = answerChoice.toString();
+            answerOptionBtn.className = "choiceBtn optionBtn";
+            answerOptionBtn.textContent = (i+1) + ". " + answerChoice.toString();
             answerOptionBtn.setAttribute("question-num", i);
-            buttonContainer.appendChild(answerOptionBtn);
+            changeContainer.appendChild(answerOptionBtn);
             answerOptionBtn.addEventListener('click', checkAnswer);
-        
-
-//             headerTitle.textContent = questions[num].question;
-//             var answerChoice = questions[num].choices[i];
-//             var answerBtn = document.createElement("button");
-//             answerBtn.className = "choiceBtn";
-//             answerBtn.textContent = answerChoice.toString();
-//             answerBtn.setAttribute("question-num", i);
-//             buttonContainer.appendChild(answerBtn);
-//             answerBtn.addEventListener('click', checkAnswer);
         }
     }
     else{
         alert("You completed all of the questions! Let's see how you did:");
+        clearQuestions();
+        endGame();
     }
-//     else{
-//         alert("You completed all of the questions! Let's see how you did:");
-//     }
-    
 };
 
 var countDown = function(){ //timer for quiz
@@ -264,29 +233,6 @@ var checkAnswer = function(){ //check to see if the user response is correct
     clearQuestions();
     questionNum++;
     setQuestions();
-    
-//     var selectedAnswer = event.target.getAttribute("question-num");
-//     var correctAnswer = questions[num].answer;
-
-//         if (selectedAnswer == correctAnswer){
-//             result.textContent = "Correct!"; 
-//             score++;
-//             var resultTimer = setInterval(function(){
-//                 result.textContent = '';
-//                 clearInterval(resultTimer);
-//             }, 1500);
-//         }
-//         else{
-//             result.textContent = "Wrong!";
-//             var resultTimer = setInterval(function(){
-//                 result.textContent = '';
-//                 clearInterval(resultTimer);
-//             }, 1500);
-//         };
-    
-//     clearQuestions();
-//     num++;
-//     setQuestions();
 }; 
 
 
@@ -296,10 +242,6 @@ var clearQuestions = function(){
         var answers = document.querySelector(".choiceBtn");
         answers.remove();
     }
-//     for (var i = 0; i < questions[num].choices.length; i++){
-//         var answers = document.querySelector(".choiceBtn");
-//         answers.remove();
-//     }
 
 };
 
@@ -308,70 +250,73 @@ var endGame = function(){
     headerTitleEl.textContent = "All done!";
     descEl.textContent = "Your final score is " + score + "!";
     content.appendChild(descEl);
-    var scoreInputWrapper = document.createElement("div");
     scoreInput.id = "scoreIntials";
     scoreInput.type = "text";
     var submitBtn = document.createElement("button");
     submitBtn.id = "submit";
     submitBtn.className = "choiceBtn";
     submitBtn.textContent = "Submit";
-    content.appendChild(scoreInputWrapper);
-    scoreInputWrapper.textContent = "Enter Initials: ";
-    scoreInputWrapper.appendChild(scoreInput);
-    scoreInputWrapper.appendChild(submitBtn);
+    changeContainer.textContent = "Enter Initials: ";
+    changeContainer.appendChild(scoreInput);
+    changeContainer.appendChild(submitBtn);
     submitBtn.addEventListener("click", storeHighScore);
-
-//     result.remove();
-//     headerTitle.textContent = "All done!";
-//     Desc.textContent = "Your final score is " + score + "!";
-//     content.appendChild(Desc);
-//     var initialsWrapper = document.createElement("div");
-//     //var initialsInput = document.createElement("input");
-//     initialsInput.id = "scoreInitials";
-//     initialsInput.type = "text";
-//     var submitBtn = document.createElement("button");
-//     submitBtn.id = "submit";
-//     submitBtn.className = "choiceBtn";
-//     submitBtn.textContent = "Submit";
-//     content.appendChild(initialsWrapper);
-//     initialsWrapper.textContent = "Enter Initials: ";
-//     initialsWrapper.appendChild(initialsInput);
-//     initialsWrapper.appendChild(submitBtn);
-//     console.log(submitBtn);
-//     submitBtn.addEventListener("click", storeHighScore);
 
 };
 
 var storeHighScore = function(){
+    tryNum++;
     var initials = scoreInput.value;
+    initialName.push([initials]);
+    initialScore.push([score]);
+
+    //var initials = scoreInput.value;
     if (initials === ''){
         alert("Please add your initials. We can't log your high score without them!");
     }
     else{
         alert("You're High Score was successfully added!");
-        localStorage.setItem('Initials', initials);
-        localStorage.setItem('Score', score);
+        localStorage.setItem('Initials', JSON.stringify(initialName));
+        localStorage.setItem('Score', JSON.stringify(initialScore));
     }
 
     showHighScore();
-//     var initials = initialsInput.value;
-//     console.log(initials);
-//     if (initials === ''){
-//         alert("Please add your initials. We can't log your high score without them!");
-//     }
-//     else{
-//         alert("You're High Score was successfully added!");
-//         localStorage.setItem('Initials', initials);
-//         localStorage.setItem('Score', score);
-//     }
-
-//     showHighScore();
 };
 
 var showHighScore = function(){
+    while(changeContainer.firstChild){
+        changeContainer.removeChild(changeContainer.firstChild);
+    }
+    descEl.remove();
+    var test = document.createElement("div");
+    headerTitleEl.textContent = "High Scores";
+    var scoreListEl = document.createElement("ol");
+    scoreListEl.className = "scoreList";
+    changeContainer.appendChild(scoreListEl);
+    var arrName = JSON.parse(localStorage.getItem('Initials'));
+    var arrScore = JSON.parse(localStorage.getItem('Score'));
+    for (var i = 0; i < arrName.length; i++){
+        var scoreListItemEl = document.createElement("li");
+        scoreListItemEl.textContent = arrName[i] + " - " + arrScore[i];
+        scoreListEl.appendChild(scoreListItemEl);
+    }
+    var tryAgainBtn = document.createElement("button");
+    tryAgainBtn.className = "choiceBtn quizEndBtn";
+    tryAgainBtn.id = "tryAgainBtn";
+    tryAgainBtn.textContent = "Try Again?"
+    var clearBtn = document.createElement("button");
+    clearBtn.className = "choiceBtn quizEndBtn";
+    clearBtn.id = "clearBtn";
+    clearBtn.textContent = "Clear Scores";
+    changeContainer.appendChild(tryAgainBtn);
+    changeContainer.appendChild(clearBtn);
 
-    
+    tryAgainBtn.addEventListener('click', loadMenu);
+    clearBtn.addEventListener('click', clearScores);
 }
+
+var clearScores = function(){
+    localStorage.clear();
+};
 
 window.addEventListener('load', loadMenu);
 startBtn.addEventListener('click', clearMenu);
