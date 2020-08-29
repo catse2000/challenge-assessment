@@ -22,11 +22,21 @@ header p{
     justify-content: space-between;
     padding: 10px 15px;
 }
-.nav a{
-    color: var(--secondary);
+.nav button{
+    color: var(--primary);
     text-decoration: none;
+    border: none;
+    background: none;
 }
 
+.nav button:hover{
+    color: var(--secondary);
+}
+
+.nav button:focus{
+    outline: none;
+
+}
 .main-section {
     display: flex;
     justify-content: center; 
