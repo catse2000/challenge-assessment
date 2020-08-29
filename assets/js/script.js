@@ -191,7 +191,7 @@ var setQuestions = function(){ //set up questions
     }
     else{
         alert("You completed all of the questions! Let's see how you did:");
-
+        timer = 75;
         //clearChangeContainer();
         //endGame();
     }
@@ -210,6 +210,7 @@ var countDown = function(){ //timer for quiz
         }
         else{
             alert("You ran out of time! Let's see how you did:");
+            timer = 75;
             clearChangeContainer();
             endGame();
             clearInterval(countInterval);
@@ -285,38 +286,45 @@ var storeHighScore = function(){
 };
 
 var showHighScore = function(){
-    if (localStorage.length > 0){
-        clearChangeContainer();
-        descEl.remove();
-        var test = document.createElement("div");
-        headerTitleEl.textContent = "High Scores";
-        var scoreListEl = document.createElement("ol");
-        scoreListEl.className = "scoreList";
-        changeContainer.appendChild(scoreListEl);
-        var arrName = JSON.parse(localStorage.getItem('Initials'));
-        var arrScore = JSON.parse(localStorage.getItem('Score'));
-        for (var i = 0; i < arrName.length; i++){
-            var scoreListItemEl = document.createElement("li");
-            scoreListItemEl.textContent = arrName[i] + " - " + arrScore[i];
-            scoreListEl.appendChild(scoreListItemEl);
+    if (timer == 75){
+        if (localStorage.length > 0){
+            clearChangeContainer();
+            descEl.remove();
+            var test = document.createElement("div");
+            headerTitleEl.textContent = "High Scores";
+            var scoreListEl = document.createElement("ol");
+            scoreListEl.className = "scoreList";
+            changeContainer.appendChild(scoreListEl);
+            var arrName = JSON.parse(localStorage.getItem('Initials'));
+            var arrScore = JSON.parse(localStorage.getItem('Score'));
+            for (var i = 0; i < arrName.length; i++){
+                var scoreListItemEl = document.createElement("li");
+                scoreListItemEl.textContent = arrName[i] + " - " + arrScore[i];
+                scoreListEl.appendChild(scoreListItemEl);
+            }
+            var tryAgainBtn = document.createElement("button");
+            tryAgainBtn.className = "choiceBtn quizEndBtn";
+            tryAgainBtn.id = "tryAgainBtn";
+            tryAgainBtn.textContent = "Try Again?"
+            var clearBtn = document.createElement("button");
+            clearBtn.className = "choiceBtn quizEndBtn";
+            clearBtn.id = "clearBtn";
+            clearBtn.textContent = "Clear Scores";
+            changeContainer.appendChild(tryAgainBtn);
+            changeContainer.appendChild(clearBtn);
+        
+            tryAgainBtn.addEventListener('click', loadMenu);
+            clearBtn.addEventListener('click', clearScores);
         }
-        var tryAgainBtn = document.createElement("button");
-        tryAgainBtn.className = "choiceBtn quizEndBtn";
-        tryAgainBtn.id = "tryAgainBtn";
-        tryAgainBtn.textContent = "Try Again?"
-        var clearBtn = document.createElement("button");
-        clearBtn.className = "choiceBtn quizEndBtn";
-        clearBtn.id = "clearBtn";
-        clearBtn.textContent = "Clear Scores";
-        changeContainer.appendChild(tryAgainBtn);
-        changeContainer.appendChild(clearBtn);
-    
-        tryAgainBtn.addEventListener('click', loadMenu);
-        clearBtn.addEventListener('click', clearScores);
+        
+        else{
+            alert("There are no scores to show right now. Try taking the quiz first.");
+        }
     }
     else{
-        alert("There are no scores to show right now. Try taking the quiz first.");
+        alert("Finish the quiz first");
     }
+    
     
 }
 
