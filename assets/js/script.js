@@ -192,8 +192,6 @@ var setQuestions = function(){ //set up questions
     else{
         alert("You completed all of the questions! Let's see how you did:");
         timer = 75;
-        //clearChangeContainer();
-        //endGame();
     }
 };
 var countDown = function(){ //timer for quiz
@@ -234,7 +232,7 @@ var checkAnswer = function(){ //check to see if the user response is correct
     }
     else{
         result.textContent = "Wrong!";
-        //timer = timer - 5;
+        timer = timer - 5;
         var myVar = setInterval(resultTimer, time);
     }
 
