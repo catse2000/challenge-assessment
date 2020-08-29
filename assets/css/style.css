@@ -2,6 +2,7 @@
     box-sizing: border-box;
 }
 
+/* store main colors used throughout program */
 :root{
     --primary: #470080;
     --secondary: #b07cff;
@@ -14,9 +15,12 @@ body {
     padding: 0;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
+/* header styling */
 header p{
     margin: 0px;
 }
+
 .nav{
     display: flex;
     justify-content: space-between;
@@ -37,6 +41,8 @@ header p{
     outline: none;
 
 }
+
+/* main section and button styling */
 .main-section {
     display: flex;
     justify-content: center; 
@@ -52,7 +58,6 @@ header p{
 li{
     padding: 5px 10px;
 }
-
 
 .main-wrapper{
     width: 70vh;

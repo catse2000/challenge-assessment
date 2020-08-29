@@ -1,22 +1,23 @@
+//Global variables that are used throughout the program
 var content = document.querySelector(".main-interactions"); //div.challenge-interactions
 var navHighScoreBtn = document.querySelector("#high-scores");
 var headerTitleEl = document.createElement("h1"); //create "h1" element for menu title, question #, highScore titles
 headerTitleEl.id = "title"; //assign h1 classname "title" for styling
 var descEl = document.createElement("p"); //create "p" element for menu description, questions, high score results, and scores
 descEl.id = "desc"; //assign id of "desc" to "p" element for styling
-var changeContainer = document.createElement("div");
-changeContainer.className = "change-container";
-var startDiv = document.createElement("div");
+var changeContainer = document.createElement("div"); //create div that will handle changing content like buttons and paragraphs
+changeContainer.className = "change-container"; //give changeContainer class of "change-container"
 var startBtn = document.createElement("button"); //create "button" element to be used as startBtn, question buttons, submit button, and clear and try buttons
-startBtn.className = "choiceBtn startBtn";
-startBtn.id = "startBtn";
-startBtn.textContent = "Start Quiz"; //assign text to button
-var result = document.createElement("p");
-result.id = "result";
-var scoreInput = document.createElement("input");
-var timer = 75;
-var timerEl = document.querySelector("#timer"); //span that holds timer
-var score = 0;
+startBtn.className = "choiceBtn startBtn"; // give startBtn class of "choiceBtn startBtn"
+startBtn.id = "startBtn"; //give startBtn id of "startBtn"
+startBtn.textContent = "Start Quiz"; //assign text to button //give startBtn textContent of "Start Quiz"
+var result = document.createElement("p"); //create p element to house "result" info
+result.id = "result"; //give result element id of "result"
+var scoreInput = document.createElement("input"); //creates element for input that will be used to enter high score initials
+var time = 75; //keep track of default time
+var timer = time; //timer to maintain the document
+var timerEl = document.querySelector("#timer"); //span that holds timer text info
+var score = 0; //score that keeps track of users correct answers
 var questionNum = 0; //used to store which question is currently being displayed
 var questions = [
     {
@@ -144,40 +145,39 @@ var questions = [
         options:["Yes", "No"],
         answer: 0
     }
-];
-var initialName = [];
-var initialScore = [];
-var tryNum = 0;
+]; //array that holds all of the quiz quesitions
+
 
  var loadMenu = function(){ //used to load Menu at start, and also when user selects "tryAgain"
-    timer = 75;
-    timerEl.textContent = timer;
-    clearChangeContainer();
-    headerTitleEl.textContent = "Coding Quiz Challenge"; //assign text to "h1"
-    content.appendChild(headerTitleEl); //add "h1" mainInteractions "div"
+    // set program for start
+    timer = time; //resets timer to number stored in "time"
+    questionNum = 0; //clear questionNum to restart quiz
+    score = 0; //clear previous score to restart quiz
+    timerEl.textContent = timer; //stores value of "timer" on the timerEl element the user sees
+    clearChangeContainer(); //refreshes the changeContainer and allows new elements to be loaded
+    headerTitleEl.textContent = "Coding Quiz Challenge"; 
+    content.appendChild(headerTitleEl); 
     descEl.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!";
+    
+    //add elements to page
     content.appendChild(descEl); //add "p" to mainInteractions "div"
     content.appendChild(changeContainer); //add "div" for buttons to mainInteractions "div"
     changeContainer.appendChild(startBtn); //add "button" to "buttons" div
     content.appendChild(result);
-    questionNum = 0; //clear questionNum to restart quiz
-    score = 0; //clear previous score to restart quiz
-
 }
 
+//clears menu and starts the quiz
 var clearMenu = function(){ //used to clear the startMenu and start questions
-    if (descEl || startBtn) //if descEl is true or startBtn is true, 
-    {
-        startBtn.remove(); //remove startBtn
-    }
+    clearChangeContainer(); //refresh change container for new elements
     setQuestions(); //start function that will compile questions
-
     countDown(); //starts timer
 }
 
-var setQuestions = function(){ //set up questions
+//updates menu to include questions and adds answer choices
+var setQuestions = function(){ 
     if(questionNum < questions.length){
         for (var i = 0; i < questions[questionNum].options.length; i++){
+            //compile questions and update existing elements
             headerTitleEl.textContent = "Question # " + (questionNum + 1);
             descEl.textContent = questions[questionNum].question;
             var answerChoice = questions[questionNum].options[i];
@@ -186,29 +186,33 @@ var setQuestions = function(){ //set up questions
             answerOptionBtn.textContent = (i+1) + ". " + answerChoice.toString();
             answerOptionBtn.setAttribute("question-num", i);
             changeContainer.appendChild(answerOptionBtn);
+
+            //wait until answerOptionBtn is clicked to check if answer is correct and log score
             answerOptionBtn.addEventListener('click', checkAnswer);
         }
     }
-    else{
+    else{ 
         alert("You completed all of the questions! Let's see how you did:");
-        timer = 75;
+        timer = time; //reset timer
     }
 };
-var countDown = function(){ //timer for quiz
+
+//starts timer
+var countDown = function(){
     var countInterval = setInterval(function(){
         if (timer > 0 && questionNum != questions.length){
             timer--;
             timerEl.textContent = timer;
         }
         else if(questionNum == questions.length){
-            clearChangeContainer();
-            clearInterval(countInterval);
-            endGame();
+            clearChangeContainer(); //resets change container for new elements
+            clearInterval(countInterval); //stops timer
+            endGame(); //start endGame function
 
         }
         else{
             alert("You ran out of time! Let's see how you did:");
-            timer = 75;
+            timer = time;
             clearChangeContainer();
             endGame();
             clearInterval(countInterval);
@@ -217,37 +221,42 @@ var countDown = function(){ //timer for quiz
     
 };
 
-
-
-var checkAnswer = function(){ //check to see if the user response is correct
+//checks if answer is correct or incorrect and logs score or penalizes
+var checkAnswer = function(){ 
     var selectedAnswer = event.target.getAttribute("question-num"); //store the answer selected
     var correctAnswer = questions[questionNum].answer; //store correct answer from questions array for comparison with selectedAnswer
     
-    var time = 1000;
+    var time = 1000; 
 
     if (selectedAnswer == correctAnswer){
-        result.textContent = "Correct!";
         score++;
-        var myVar = setInterval(resultTimer, time);
+        result.textContent = "Correct! Your Score is: " + score;
+        var myVar = setInterval(resultTimer, time); //determines how long message will show for
     }
     else{
-        result.textContent = "Wrong!";
         timer = timer - 5;
-        var myVar = setInterval(resultTimer, time);
+        result.textContent = "Wrong! Lose 5 seconds";
+        var myVar = setInterval(resultTimer, time);//determines how long message will show for
     }
 
+    //determins what is shown after myVar
     function resultTimer(){
         result.textContent = '';
         clearInterval(myVar);
     };
 
-    clearChangeContainer();
-    questionNum++;
-    setQuestions();
+    clearChangeContainer(); //clear changeContainer for new elements
+    questionNum++; //add to question number that array provides
+    setQuestions(); //go to setQuestions function to set new question
 }; 
 
+//handles end of quiz
 var endGame = function(){
+    //prepare for new elements
+    clearChangeContainer();
     result.remove();
+
+    //add new elements
     headerTitleEl.textContent = "All done!";
     descEl.textContent = "Your final score is " + score + "!";
     content.appendChild(descEl);
@@ -260,46 +269,47 @@ var endGame = function(){
     changeContainer.textContent = "Enter Initials: ";
     changeContainer.appendChild(scoreInput);
     changeContainer.appendChild(submitBtn);
+
+    //when submitBtn is clicked go to storeHighScore function
     submitBtn.addEventListener("click", storeHighScore);
 
 };
 
+// stores HighScore in local memory in browser
 var storeHighScore = function(){
-    tryNum++;
-    var initials = scoreInput.value;
-    initialName.push([initials]);
-    initialScore.push([score]);
+    var initialName = []; //store values entered in input
+    var initialScore = []; //stores score at end of quiz
+    var initials = scoreInput.value; //stores value of scoreInput into variable initials
+    initialName.push([initials]); //push to array initialName
+    initialScore.push([score]); //push to array initialScore
 
-    //var initials = scoreInput.value;
+    //error handling
     if (initials === ''){
         alert("Please add your initials. We can't log your high score without them!");
     }
     else{
         alert("You're High Score was successfully added!");
-        localStorage.setItem('Initials', JSON.stringify(initialName));
-        localStorage.setItem('Score', JSON.stringify(initialScore));
+        localStorage.setItem('Initials', JSON.stringify(initialName)); //combines array as string and stores in local storage
+        localStorage.setItem('Score', JSON.stringify(initialScore)); //combines array as string and stores in local storage
     }
 
-    showHighScore();
+    showHighScore(); //start function showHighScore()
 };
 
+//displays high score
 var showHighScore = function(){
-    if (timer == 75){
-        if (localStorage.length > 0){
+    if (timer == time){//error handling: to prevent user from getting to highScore menu during a quiz
+        if (localStorage.length > 0){ //error handling: to prevent user from going to highscore when there are no values to show
+            //prepare for new elements
             clearChangeContainer();
             descEl.remove();
+
+            // add new elements
             var test = document.createElement("div");
             headerTitleEl.textContent = "High Scores";
             var scoreListEl = document.createElement("ol");
             scoreListEl.className = "scoreList";
             changeContainer.appendChild(scoreListEl);
-            var arrName = JSON.parse(localStorage.getItem('Initials'));
-            var arrScore = JSON.parse(localStorage.getItem('Score'));
-            for (var i = 0; i < arrName.length; i++){
-                var scoreListItemEl = document.createElement("li");
-                scoreListItemEl.textContent = arrName[i] + " - " + arrScore[i];
-                scoreListEl.appendChild(scoreListItemEl);
-            }
             var tryAgainBtn = document.createElement("button");
             tryAgainBtn.className = "choiceBtn quizEndBtn";
             tryAgainBtn.id = "tryAgainBtn";
@@ -310,34 +320,47 @@ var showHighScore = function(){
             clearBtn.textContent = "Clear Scores";
             changeContainer.appendChild(tryAgainBtn);
             changeContainer.appendChild(clearBtn);
-        
-            tryAgainBtn.addEventListener('click', loadMenu);
-            clearBtn.addEventListener('click', clearScores);
+
+            //retrieve values from local storage
+            var arrName = JSON.parse(localStorage.getItem('Initials'));
+            var arrScore = JSON.parse(localStorage.getItem('Score'));
+
+            //display values 
+            for (var i = 0; i < arrName.length; i++){
+                var scoreListItemEl = document.createElement("li");
+                scoreListItemEl.textContent = arrName[i] + " - " + arrScore[i];
+                scoreListEl.appendChild(scoreListItemEl);
+            }
+            
+            //event listners
+            tryAgainBtn.addEventListener('click', loadMenu); //start loadMenu() when tryAgainBtn is clicked
+            clearBtn.addEventListener('click', clearScores); //start clearScores() when clearBtn is clicked
         }
         
-        else{
+        else{ //error handling when highscores button is clicked before there are scores to see
             alert("There are no scores to show right now. Try taking the quiz first.");
         }
     }
-    else{
+    else{ //error handling when highscores button is clicked while in a quiz
         alert("Finish the quiz first");
     }
-    
-    
 }
 
+//clear scores from local storage
 var clearScores = function(){
     localStorage.clear();
     alert("These scores have been cleared!");
-    loadMenu();
+    loadMenu(); //restart start menu
 };
 
+//used to clear changeContainer to add new elements
 var clearChangeContainer = function(){
     while(changeContainer.firstChild){
         changeContainer.removeChild(changeContainer.firstChild);
     };
 }
 
+//primary event listeners
 window.addEventListener('load', loadMenu);
 startBtn.addEventListener('click', clearMenu);
 navHighScoreBtn.addEventListener('click', showHighScore);
